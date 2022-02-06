@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import project.demo.entity.Student;
+import project.demo.entity.StudentDTO;
 
 import java.util.List;
 
@@ -12,9 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDTO {
-    String username;
-    String password;
-    String email;
+    StudentDTO member;
     List<AuthorityDTO> authorities;
     String id;
 }
