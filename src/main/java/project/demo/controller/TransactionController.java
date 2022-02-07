@@ -52,7 +52,7 @@ public class TransactionController {
         student.setCoinAmount(student.getCoinAmount() + body.getCoinAmount());
         CoinStock output = stockRepository.save(stock);
         studentRepository.save(student);
-        return ResponseEntity.ok(ProjectMapper.INSTANCE.getStock(output));
+        return ResponseEntity.ok(ProjectMapper.INSTANCE.getStudentDTO(student));
     }
 
     @PostMapping("/sell")
@@ -72,6 +72,6 @@ public class TransactionController {
         student.setCoinAmount(student.getCoinAmount() - body.getCoinAmount());
         CoinStock output = stockRepository.save(stock);
         studentRepository.save(student);
-        return ResponseEntity.ok(ProjectMapper.INSTANCE.getStock(output));
+        return ResponseEntity.ok(ProjectMapper.INSTANCE.getStudentDTO(student));
     }
 }
