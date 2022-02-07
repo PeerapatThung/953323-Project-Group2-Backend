@@ -41,25 +41,35 @@ public class TransactionController {
     }
 
     @PostMapping("/buy")
-    public ResponseEntity<?> buy(@RequestBody Student stu) {
-        Student student = studentRepository.findById(stu.getId()).orElse(null);
-        System.out.println(stu);
+    public ResponseEntity<?> buy(@RequestBody Student body) {
+        Student student = studentRepository.findById(body.getId()).orElse(null);
         CoinStock stock = stockService.getStock((long) 1);
-        stock.setAmount(stock.getAmount() - stu.getCoinAmount());
-        student.setMoney(student.getMoney() - 10.0 * stu.getCoinAmount());
-        student.setCoinAmount(student.getCoinAmount() + stu.getCoinAmount());
+        if (body.getCoinAmount() > stock.getAmount() || student.getMoney() < body.getCoinAmount()*10.0 || stock.getAmount() <=0){
+            return (ResponseEntity<?>) ResponseEntity.badRequest();
+        }
+        stock.setAmount(stock.getAmount() - body.getCoinAmount());
+        student.setMoney(student.getMoney() - (10.0 * body.getCoinAmount()));
+        student.setCoinAmount(student.getCoinAmount() + body.getCoinAmount());
         CoinStock output = stockRepository.save(stock);
         studentRepository.save(student);
         return ResponseEntity.ok(ProjectMapper.INSTANCE.getStock(output));
     }
 
     @PostMapping("/sell")
-    public ResponseEntity<?> sell(@RequestBody Student stu) {
-        Student student = studentRepository.findById(stu.getId()).orElse(null);
+    public ResponseEntity<?> sell(@RequestBody Student body) {
+        Student student = studentRepository.findById(body.getId()).orElse(null);
         CoinStock stock = stockService.getStock((long) 1);
-        stock.setAmount(stock.getAmount() + stu.getCoinAmount());
-        student.setMoney(student.getMoney() + 10.0 * stu.getCoinAmount());
-        student.setCoinAmount(student.getCoinAmount() - stu.getCoinAmount());
+        stock.setAmount(stock.getAmount() + body.getCoinAmount());
+        System.out.println(body);
+        if(student.getCoinAmount() < body.getCoinAmount()) {return (ResponseEntity<?>) ResponseEntity.badRequest();}
+
+        if (student.getCoinAmount() > 5) {
+            student.setMoney(student.getMoney() + body.getCoinAmount() * body.getMoney());
+        } else {
+            student.setMoney(student.getMoney() + 10.0 * body.getCoinAmount());
+        }
+
+        student.setCoinAmount(student.getCoinAmount() - body.getCoinAmount());
         CoinStock output = stockRepository.save(stock);
         studentRepository.save(student);
         return ResponseEntity.ok(ProjectMapper.INSTANCE.getStock(output));
