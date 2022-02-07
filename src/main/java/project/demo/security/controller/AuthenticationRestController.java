@@ -112,7 +112,7 @@ public class AuthenticationRestController {
             userRepository.save(user);
 
             Student student = Student.builder()
-                    .money(500.00)
+                    .money(200.00)
                     .name(user.getFirstname())
                     .coinAmount(0)
                     .build();

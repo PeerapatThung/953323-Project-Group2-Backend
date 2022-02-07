@@ -53,8 +53,8 @@ public class InitApp implements ApplicationListener<ApplicationReadyEvent> {
                 .build();
         student = Student.builder()
                     .name(user1.getFirstname())
-                    .money(500.00)
-                    .coinAmount(5).build();
+                    .money(200.00)
+                    .coinAmount(0).build();
         authorityRepository.save(authUser);
         student.setAccount(user1);
         user1.setMember(student);
