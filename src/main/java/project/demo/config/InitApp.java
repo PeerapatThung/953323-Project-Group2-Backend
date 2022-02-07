@@ -43,16 +43,16 @@ public class InitApp implements ApplicationListener<ApplicationReadyEvent> {
                 .stockname("CAMT Coin")
                 .amount(30).build();
         user1 = User.builder()
-                .username("admin@admin.com")
-                .email("admin@admin.com")
-                .password(encoder.encode("admin"))
-                .firstname("admin")
-                .lastname("admin")
+                .username("student1")
+                .email("student1@admin.com")
+                .password(encoder.encode("student1"))
+                .firstname("student1")
+                .lastname("student1")
                 .enabled(true)
                 .lastPasswordResetDate(Date.from(LocalDate.of(2021,01,01).atStartOfDay(ZoneId.systemDefault()).toInstant()))
                 .build();
         student = Student.builder()
-                    .name("Student101")
+                    .name(user1.getFirstname())
                     .money(500.00)
                     .coinAmount(5).build();
         authorityRepository.save(authUser);

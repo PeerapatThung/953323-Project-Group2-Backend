@@ -41,24 +41,25 @@ public class TransactionController {
     }
 
     @PostMapping("/buy")
-    public ResponseEntity<?> buy(@RequestBody Student stu, @RequestParam(value = "amount", required = false) Integer amount) {
+    public ResponseEntity<?> buy(@RequestBody Student stu) {
         Student student = studentRepository.findById(stu.getId()).orElse(null);
+        System.out.println(stu);
         CoinStock stock = stockService.getStock((long) 1);
-        stock.setAmount(stock.getAmount() - amount);
-        student.setMoney(student.getMoney() - 10.0 * amount);
-        student.setCoinAmount(student.getCoinAmount() + amount);
+        stock.setAmount(stock.getAmount() - stu.getCoinAmount());
+        student.setMoney(student.getMoney() - 10.0 * stu.getCoinAmount());
+        student.setCoinAmount(student.getCoinAmount() + stu.getCoinAmount());
         CoinStock output = stockRepository.save(stock);
         studentRepository.save(student);
         return ResponseEntity.ok(ProjectMapper.INSTANCE.getStock(output));
     }
 
     @PostMapping("/sell")
-    public ResponseEntity<?> sell(@RequestBody Student stu, @RequestParam(value = "amount", required = false) Integer amount) {
+    public ResponseEntity<?> sell(@RequestBody Student stu) {
         Student student = studentRepository.findById(stu.getId()).orElse(null);
         CoinStock stock = stockService.getStock((long) 1);
-        stock.setAmount(stock.getAmount() + amount);
-        student.setMoney(student.getMoney() + 10.0 * amount);
-        student.setCoinAmount(student.getCoinAmount() - amount);
+        stock.setAmount(stock.getAmount() + stu.getCoinAmount());
+        student.setMoney(student.getMoney() + 10.0 * stu.getCoinAmount());
+        student.setCoinAmount(student.getCoinAmount() - stu.getCoinAmount());
         CoinStock output = stockRepository.save(stock);
         studentRepository.save(student);
         return ResponseEntity.ok(ProjectMapper.INSTANCE.getStock(output));
