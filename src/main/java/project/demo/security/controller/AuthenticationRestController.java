@@ -115,6 +115,7 @@ public class AuthenticationRestController {
                     .money(200.00)
                     .name(user.getFirstname())
                     .coinAmount(0)
+                    .buyLimit(5)
                     .build();
             student.setAccount(user);
             studentRepository.save(student);
