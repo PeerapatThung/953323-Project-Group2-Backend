@@ -60,7 +60,6 @@ public class TransactionController {
     public ResponseEntity<?> sell(@RequestBody Student body) {
         Student student = studentRepository.findById(body.getId()).orElse(null);
         CoinStock stock = stockService.getStock((long) 1);
-        stock.setAmount(stock.getAmount() + body.getCoinAmount());
         System.out.println(body);
         if(student.getCoinAmount() < body.getCoinAmount()) {return (ResponseEntity<?>) ResponseEntity.badRequest();}
 
