@@ -61,8 +61,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/auth/**",  "/refresh").permitAll()
                 .antMatchers("/", "/error", "/webjars/**").permitAll()
-                .antMatchers("/").hasRole("VISITOR")
-                .antMatchers(HttpMethod.GET,"/projects").permitAll()
                 .antMatchers(HttpMethod.POST, "/register").permitAll()
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .anyRequest().authenticated();
