@@ -54,6 +54,7 @@ public class InitApp implements ApplicationListener<ApplicationReadyEvent> {
         student = Student.builder()
                     .name(user1.getFirstname())
                     .money(200.00)
+                    .buyLimit(5)
                     .coinAmount(0).build();
         authorityRepository.save(authUser);
         student.setAccount(user1);

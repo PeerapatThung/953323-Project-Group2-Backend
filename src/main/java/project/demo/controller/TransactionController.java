@@ -44,10 +44,11 @@ public class TransactionController {
     public ResponseEntity<?> buy(@RequestBody Student body) {
         Student student = studentRepository.findById(body.getId()).orElse(null);
         CoinStock stock = stockService.getStock((long) 1);
-        if (body.getCoinAmount() > stock.getAmount() || student.getMoney() < body.getCoinAmount()*10.0 || stock.getAmount() <=0){
+        if (body.getCoinAmount() > stock.getAmount() || student.getMoney() < body.getCoinAmount()*10.0 || stock.getAmount() <=0 || student.getBuyLimit() == 0 || body.getCoinAmount() >5){
             return (ResponseEntity<?>) ResponseEntity.badRequest();
         }
         stock.setAmount(stock.getAmount() - body.getCoinAmount());
+        student.setBuyLimit(student.getBuyLimit() - body.getCoinAmount());
         student.setMoney(student.getMoney() - (10.0 * body.getCoinAmount()));
         student.setCoinAmount(student.getCoinAmount() + body.getCoinAmount());
         CoinStock output = stockRepository.save(stock);

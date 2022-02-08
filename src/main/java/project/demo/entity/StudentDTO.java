@@ -14,4 +14,6 @@ public class StudentDTO {
     String name;
     Double money;
     Integer coinAmount;
+    Integer buyLimit;
+
 }

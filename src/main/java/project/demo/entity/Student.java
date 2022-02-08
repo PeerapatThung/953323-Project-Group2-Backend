@@ -21,6 +21,7 @@ public class Student {
     String name;
     Double money;
     Integer coinAmount;
+    Integer buyLimit;
 
     @OneToOne
     User account;
