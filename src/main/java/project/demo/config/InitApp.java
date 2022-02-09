@@ -39,7 +39,7 @@ public class InitApp implements ApplicationListener<ApplicationReadyEvent> {
         Student student;
         PasswordEncoder encoder = new BCryptPasswordEncoder();
         Authority authUser = Authority.builder().name(AuthorityName.ROLE_USER).build();
-        
+
         stock = CoinStock.builder()
                 .stockname("CAMT Coin")
                 .amount((int)(Math.random()* 1200)).build();

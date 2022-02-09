@@ -1,7 +1,10 @@
 package project.demo.security.controller;
 
 
+import project.demo.dao.StockDao;
+import project.demo.entity.CoinStock;
 import project.demo.entity.Student;
+import project.demo.repository.CoinStockRepository;
 import project.demo.repository.StudentRepository;
 import project.demo.security.JwtTokenUtil;
 import project.demo.security.entity.Authority;
@@ -53,6 +56,12 @@ public class AuthenticationRestController {
 
     @Autowired
     AuthorityRepository authorityRepository;
+
+    @Autowired
+    CoinStockRepository stockRepository;
+
+    @Autowired
+    StockDao stockDao;
 
     @PostMapping("${jwt.route.authentication.path}")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest) throws AuthenticationException {
@@ -118,6 +127,8 @@ public class AuthenticationRestController {
                     .buyLimit(5)
                     .build();
             student.setAccount(user);
+            CoinStock c = stockDao.getStock(1L);
+            stockDao.save(c);
             studentRepository.save(student);
             return ResponseEntity.ok("Register successfully");
 

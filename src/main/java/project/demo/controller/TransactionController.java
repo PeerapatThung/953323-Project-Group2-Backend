@@ -68,7 +68,7 @@ public class TransactionController {
         } else {
             student.setMoney(student.getMoney() + 10.0 * body.getCoinAmount());
         }
-
+        stock.setAmount(stock.getAmount() + body.getCoinAmount());
         student.setCoinAmount(student.getCoinAmount() - body.getCoinAmount());
         CoinStock output = stockRepository.save(stock);
         studentRepository.save(student);
