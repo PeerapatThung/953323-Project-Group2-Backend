@@ -25,7 +25,7 @@ public class StockServiceImpl implements StockService {
         return stockDao.save(stock);
     }
 
-    @Scheduled(fixedRate = 86400)
+    @Scheduled(fixedRate = 86400000)
     public void cronJobSch() {
         Integer number = (int)(Math.random()* 1200);
         if((stockDao.getStock(1L) != null)){
