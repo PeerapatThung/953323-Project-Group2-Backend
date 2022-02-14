@@ -34,9 +34,9 @@ public class InitApp implements ApplicationListener<ApplicationReadyEvent> {
     @Override
     @Transactional
     public void onApplicationEvent(ApplicationReadyEvent applicationReadyEvent) {
-        User user1;
+        User user1,user2;
         CoinStock stock;
-        Student student;
+        Student student,student2;
         PasswordEncoder encoder = new BCryptPasswordEncoder();
         Authority authUser = Authority.builder().name(AuthorityName.ROLE_USER).build();
 
@@ -53,17 +53,36 @@ public class InitApp implements ApplicationListener<ApplicationReadyEvent> {
                 .enabled(true)
                 .lastPasswordResetDate(Date.from(LocalDate.of(2021,01,01).atStartOfDay(ZoneId.systemDefault()).toInstant()))
                 .build();
+        user2 = User.builder()
+                .username("student2")
+                .email("student2@admin.com")
+                .password(encoder.encode("student2"))
+                .firstname("student2")
+                .lastname("student2")
+                .enabled(true)
+                .lastPasswordResetDate(Date.from(LocalDate.of(2021,01,01).atStartOfDay(ZoneId.systemDefault()).toInstant()))
+                .build();
         student = Student.builder()
                     .name(user1.getFirstname())
                     .money(200.00)
                     .buyLimit(5)
                     .coinAmount(5).build();
+        student2 = Student.builder()
+                .name(user2.getFirstname())
+                .money(200.00)
+                .buyLimit(5)
+                .coinAmount(10).build();
         authorityRepository.save(authUser);
         student.setAccount(user1);
+        student2.setAccount(user2);
         user1.setMember(student);
         user1.getAuthorities().add(authUser);
+        user2.setMember(student2);
+        user2.getAuthorities().add(authUser);
         userRepository.save(user1);
+        userRepository.save(user2);
         studentRepository.save(student);
+        studentRepository.save(student2);
         coinStockRepository.save(stock);
     }
 
