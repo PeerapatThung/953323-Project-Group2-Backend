@@ -45,6 +45,8 @@ public class TransactionController {
 
     @PostMapping("/buy")
     public ResponseEntity<?> buy(@RequestBody Student body) {
+        Map result = new HashMap();
+
         Student student = studentRepository.findById(body.getId()).orElse(null);
         CoinStock stock = stockService.getStock((long) 1);
         if (body.getCoinAmount() > stock.getAmount() || student.getMoney() < body.getCoinAmount()*10.0 || stock.getAmount() <=0 || student.getBuyLimit() == 0 || body.getCoinAmount() >5){
@@ -56,7 +58,10 @@ public class TransactionController {
         student.setCoinAmount(student.getCoinAmount() + body.getCoinAmount());
         CoinStock output = stockRepository.save(stock);
         studentRepository.save(student);
-        return ResponseEntity.ok(ProjectMapper.INSTANCE.getStudentDTO(student));
+        result.put("student", ProjectMapper.INSTANCE.getStudentDTO(student));
+        System.out.println(output);
+        result.put("stock", ProjectMapper.INSTANCE.getStock(output));
+        return ResponseEntity.ok(result);
     }
 
     @PostMapping("/sell")
