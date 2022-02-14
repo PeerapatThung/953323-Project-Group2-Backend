@@ -18,6 +18,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Controller
 public class TransactionController {
 
@@ -58,8 +61,11 @@ public class TransactionController {
 
     @PostMapping("/sell")
     public ResponseEntity<?> sell(@RequestBody Student body) {
+        Map result = new HashMap();
         Student student = studentRepository.findById(body.getId()).orElse(null);
         CoinStock stock = stockService.getStock((long) 1);
+        stock.setOriginamount(stock.getAmount());
+        stockRepository.save(stock);
         System.out.println(body);
         if(student.getCoinAmount() < body.getCoinAmount()) {return (ResponseEntity<?>) ResponseEntity.badRequest();}
 
@@ -72,6 +78,8 @@ public class TransactionController {
         student.setCoinAmount(student.getCoinAmount() - body.getCoinAmount());
         CoinStock output = stockRepository.save(stock);
         studentRepository.save(student);
-        return ResponseEntity.ok(ProjectMapper.INSTANCE.getStudentDTO(student));
+        result.put("student", ProjectMapper.INSTANCE.getStudentDTO(student));
+        result.put("stock", ProjectMapper.INSTANCE.getStock(output));
+        return ResponseEntity.ok(result);
     }
 }

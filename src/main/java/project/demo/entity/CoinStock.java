@@ -21,5 +21,6 @@ public class CoinStock {
     Long id;
     String stockname;
     Integer amount;
+    Integer originamount;
 
 }
